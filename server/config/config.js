@@ -16,7 +16,8 @@ let urlDB; // Declaración de la variable que almacenará la url para la conexi�
 if (process.env.NODE_ENV === 'dev') { // Si la variable de global de entorno "process.env.NODE_ENV" no tiene ningún valor (significa que la aplicación no está corriendo en ningún servidor y estamos en la PC como local) y entonces toma el valor "dev" (process.env.NODE_ENV = 'dev') usa la sgte url para establecer la conexión a la Db (urlDB = 'mongodb://localhost:27017/cafe')
     urlDB = 'mongodb://localhost:27017/cafe' // URL para conectarse a la DB de MongoDB cuando corre como local
 } else { // Si la variable de entorno global "process.env.NODE_ENV" tiene un valor diferente a ('dev' develoment) significa que la aplicación esta corriendo en un servidor de desarrollo usa la url que está a continuación
-    urlDB = 'mongodb+srv://cafe:123@cluster0.rtiyk.mongodb.net/cafe?retryWrites=true&w=majority'; // URL para conectarse a la DB de MongoDB cuando corre en un servidor de producción (por ej. Heroku)
+    urlDB = process.env.URL_DB;
+    // urlDB = 'mongodb+srv://cafe:123@cluster0.rtiyk.mongodb.net/cafe?retryWrites=true&w=majority'; // URL para conectarse a la DB de MongoDB cuando corre en un servidor de producción (por ej. Heroku)
 }
 
 process.env.URL_DB = urlDB; // Almacena en la variable de entorno global "process.env.URL_DB" la url para establecer la conexión a la DB
