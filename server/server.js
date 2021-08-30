@@ -22,7 +22,7 @@ app.use(require('./routes/usuario'));
 // ======================================================================================================================
 // Conexión a la DB
 // ======================================================================================================================
-mongoose.connect(process.env.URL_DB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false }, (err, res) => { // Se establece conexión a la DB 'cafe' en el host local (mongodb://localhost:27017/cafe). Después viene un objeto con opciones de configuración de mongoose '{ useNewUrlParser: true, useUnifiedTopology: true, ... }' y finalmente una callback que recibe un error y una respuesta
+mongoose.connect(process.env.URL_DB_MONGO, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false }, (err, res) => { // Se establece conexión a la DB 'cafe' en el host local (mongodb://localhost:27017/cafe). Después viene un objeto con opciones de configuración de mongoose '{ useNewUrlParser: true, useUnifiedTopology: true, ... }' y finalmente una callback que recibe un error y una respuesta
     if (err) throw err; // Si existe un error en la conexión muestra el error (err)
     console.log('Conectado a la DB'); // Si se establece la conexión correctamente muestra el sgte mensaje
 });
