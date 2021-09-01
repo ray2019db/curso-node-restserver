@@ -9,6 +9,16 @@ process.env.PORT = process.env.PORT || 3000; // Si existe un valor o número de 
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev'; // Variable de entorno que emplean los servidores (por ejemplo la usa Heroku) para definir el AMBIENTE o ENVIROMENT de trabajo (producción o desarrollo)
 
 // ==================================================================
+//  TOKEN TIEMPO DE VIDA
+// ==================================================================
+process.env.EXPIRA = '10h'; // El token expirará en 10 horas "10h". Se puede colocar el valor numérico y la unidad de medida del tiempo todo como un string
+
+// ==================================================================
+//  TOKEN SEED o semilla de autenticación
+// ==================================================================
+process.env.SEED = process.env.SEED || 'este-es-el-seed-de-desarrollo'; // Si el servidor (en este caso Heroku) no posee ninguna variable "process.env.SEED" que almacene la seed de producción, usa la semilla (seed) de desarrollo "este-es-el-seed-de-desarrollo". Se creó la variable de entorno "SEED" directamente en Heroku mediane el comando (heroku config:set SEED="este-es-el-seed-de-produccion") y así de esta manera nadie puede ver la seed ya que Heroku es el único que la conoce y la almacena en la variable creada anteriormente
+
+// ==================================================================
 //  BASE DE DATOS definir la url para la conexión a la base de datos
 // ==================================================================
 let urlDB; // Declaración de la variable que almacenará la url con el user y el password para la conexión a la DB

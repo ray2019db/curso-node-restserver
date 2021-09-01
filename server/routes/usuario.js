@@ -6,12 +6,14 @@ const _ = require('underscore'); // Importa la librería "underscore" "_" para a
 
 const Usuario = require('../models/usuario'); // Importar el modelo de Usuario para usarlo en este archivo cada vez que se haga referencia a un usuario de la DB de MongoDB. Se inicia en mayúscula por convención pero no es obligatorio
 
+const { verificaToken, verificaAdminRole } = require('../middlewares/autenticacion'); // Importar Middleware para verificar el token (función verificaToken) y el role de administrador (función verificaAdminRole)
+
 const app = express(); // Almacena el método express para poder usar todas sus propiedades, métodos, middleware, etc de este poderoso framework
 
 // =========================================================================================================================================
 // GET Método para LISTAR (obtener) una lista de usuarios almacenados en la DB
 // =========================================================================================================================================
-app.get('/usuario', (req, res) => {
+app.get('/usuario', verificaToken, (req, res) => { // Ruta para peticiones "get". Contiene 3 parámetros, el 1ro es un string con la ruta "/usuario", el 2do es un middleware (función verificaToken sin los () para que no se ejecute) ubicada en "middlewares/autenticación.js" que verificará el token enviado por el usuario en el header de la petición y si no es correcto detiene el código y no continúa y el 3ro es un callback que recibe dos parámetros, la petición (req) y la respuesta (res)
 
     let desde = (req.query.desde) || 0; // Almacena el valor a partir del cual quiero que me muestren los registros de la búsqueda. El "req.query.desde" es el valor pasado por párametro mediante la url de la petición (http://localhost:3000/usuario?desde=req.query.desde). Si no viene ningún valor por la url desde = 0
     desde = Number(desde); // Convierte el valor pasado por parámetro a valor numérico
@@ -42,7 +44,7 @@ app.get('/usuario', (req, res) => {
 // =========================================================================================================================================
 // POST Método para CREAR (Guardar) un usuario en la DB
 // =========================================================================================================================================
-app.post('/usuario', (req, res) => {
+app.post('/usuario', [verificaToken, verificaAdminRole], (req, res) => { // Ruta para peticiones "post". Contiene 3 parámetros, el 1ro es un string con la ruta "/usuario", el 2do es un middleware (función verificaToken sin los () para que no se ejecute) ubicada en "middlewares/autenticación.js" que verificará el token enviado por el usuario en el header de la petición y si no es correcto detiene el código y no continúa y el 3ro es un callback que recibe dos parámetros, la petición (req) y la respuesta (res)
     let body = req.body; // Almacena en un objeto el cuerpo de la petición
 
     let usuario = new Usuario({ // Almacena un usuario bajo el esquema o patrón de usuario creado como modelo (new Usuario()) en el archivo '../models/usuario'
@@ -70,7 +72,7 @@ app.post('/usuario', (req, res) => {
 // =========================================================================================================================================
 // PUT Método para ACTUALIZAR un usuario en la DB
 // =========================================================================================================================================
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', [verificaToken, verificaAdminRole], (req, res) => { // Ruta para peticiones "put". Contiene 3 parámetros, el 1ro es un string con la ruta "/usuario/:id", el 2do es un middleware (función verificaToken sin los () para que no se ejecute) ubicada en "middlewares/autenticación.js" que verificará el token enviado por el usuario en el header de la petición y si no es correcto detiene el código y no continúa y el 3ro es un callback que recibe dos parámetros, la petición (req) y la respuesta (res)
     let id = req.params.id // Almacena el "id" que viene por parámetro en la url de la petición http
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']); // Almacena la información que viene en el cuerpo de la petición http "body" filtrada con la librería "underscore" para almacenar solo los campos del objeto "req.body" que me interesa sean modificados
 
@@ -91,7 +93,7 @@ app.put('/usuario/:id', (req, res) => {
 // =========================================================================================================================================
 // DELETE Método para ELIMINAR realmente DESHABILITAR (no mostrarlo) un usuario en la DB, realmente ACTUALIZA el campo "estado: false" del usuario en cuestión para no perder la integridad referencial en la DB
 // =========================================================================================================================================
-app.delete('/usuario/:id', (req, res) => { // Elimina el usuario (deshabilita el usuario no lo borra solo cambia el {estado : false}) cuyo "id" venga por parámetro en la url de la petición http
+app.delete('/usuario/:id', [verificaToken, verificaAdminRole], (req, res) => { // Elimina el usuario (deshabilita el usuario no lo borra solo cambia el {estado : false}) cuyo "id" venga por parámetro en la url de la petición http. El 2do parámetro es un middleware (función verificaToken sin los () para que no se ejecute) ubicada en "middlewares/autenticación.js" que verificará el token enviado por el usuario en el header de la petición y si no es correcto detiene el código y no continúa (no podrá eliminar el usuario en este caso)
 
     let id = req.params.id; // Almacena el "id" que viene por parámetro en la url. El "id" de "req.params.id" es el id que se daclara en la ruta "/usuario/:id", si por ej: fuera "/usuario/:id_usuario" entonces quedaría así "req.params.id_usuario"
     let cambiaEstado = { estado: false }; // Almacena el objeto {estado: false} que será pasado como "body" del método "findByIdAndUpdate()" empleado más abajo. Será cambiado el valor del campo "estado" (modelo o esquema de Usuario) a "false" del usuario cuyo id coincida con el "id" pasado por parámetro en la url

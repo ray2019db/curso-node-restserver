@@ -17,7 +17,7 @@ app.use(express.json()); // Para parsear el tipo de body 'application/json'. Aho
 // ======================================================================================================================
 // Rutas Middleware
 // ======================================================================================================================
-app.use(require('./routes/usuario'));
+app.use(require('./routes/index')); // Middleware de rutas que carga el archivo "./routes/index" que contiene el índice de todas las rutas de la aplicación
 
 // ======================================================================================================================
 // Conexión a la DB
