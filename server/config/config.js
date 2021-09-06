@@ -11,7 +11,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'dev'; // Variable de entorno que
 // ==================================================================
 //  TOKEN TIEMPO DE VIDA
 // ==================================================================
-process.env.EXPIRA = '10h'; // El token expirará en 10 horas "10h". Se puede colocar el valor numérico y la unidad de medida del tiempo todo como un string
+process.env.EXPIRA = '10d'; // El token expirará en 10 horas "10h". Se puede colocar el valor numérico y la unidad de medida del tiempo todo como un string
 
 // ==================================================================
 //  TOKEN SEED o semilla de autenticación
@@ -31,3 +31,8 @@ if (process.env.NODE_ENV === 'dev') { // Si la variable de global de entorno "pr
 }
 
 process.env.URL_DB_MONGO = urlDB; // Almacena en la variable de entorno global "process.env.URL_DB_MONGO" la url para establecer la conexión a la DB
+
+// ==================================================================
+//  GOOGLE SignIn
+// ==================================================================
+process.env.CLIENT_ID = process.env.CLIENT_ID || '172591727178-4e92f6ni1mq729oern97r0pm312qigd3.apps.googleusercontent.com'

@@ -4,6 +4,10 @@ const bcrypt = require('bcrypt'); // Importar el paquete "bcrypt" para encriptar
 
 const jwt = require('jsonwebtoken');
 
+// GOOGLE SignIn
+// const { OAuth2Client } = require('google-auth-library');
+// const client = new OAuth2Client(process.env.CLIENT_ID);
+
 const app = express(); // Almacena el método express para poder usar todas sus propiedades, métodos, middleware, etc de este poderoso framework
 
 const Usuario = require('../models/usuario'); // Hace referencia a la colección de usuarios de la DB (modelo o esquema de usuario)
@@ -42,5 +46,31 @@ app.post('/login', (req, res) => {
         });
     });
 });
+
+// ================================================================================================================================
+// CONFIGURACIONES DE GOOGLE SIGNIN
+// ================================================================================================================================
+// async function verify(token) {
+
+//     const ticket = await client.verifyIdToken({
+//         idToken: token,
+//         audience: process.env.CLIENT_ID // Specify the CLIENT_ID of the app that accesses the backend
+//     });
+//     const payload = ticket.getPayload();
+
+//     console.log(payload.name);
+//     console.log(payload.email);
+// }
+
+// app.post('/google', (req, res) => {
+
+//     let token = req.body.idtoken;
+
+//     verify(token);
+
+//     res.json({ // Envía la respuesta en formato JSON 'json()'
+//         token
+//     });
+// });
 
 module.exports = app; // Se exporta "app" totalmente y no un objeto "{key: valor}" para poder utilizar todos los métodos, propiedades y middleware que este contiene

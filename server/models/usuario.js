@@ -60,4 +60,7 @@ usuarioSchema.methods.toJSON = function() { // Modificamos el método "toJSON()"
 // ===============================================================================================================================
 usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe ser único' }); // Se aplica el plugin "uniqueValidator" al esquema "usuarioSchema" y se pasa como opciones en un objeto el mensaje que deseamos mostrar cuando no se cumpla la condición de "unique". El {PATH} hace referencia al nombre del campo que tiene aplicado el validador "unique" en este caso es "email"
 
+// ===============================================================================================================================
+//  EXPORTAR EL MODELO O ESQUEMA DE USUARIO
+// ===============================================================================================================================
 module.exports = mongoose.model('Usuario', usuarioSchema); // Exportar el modelo de 'Usuario' para emplearlo en la aplicación. No es más que el esquema de usuario (usuarioSchema) que se nombra con un alias para identificarlo mejor, en este caso 'Usuario'

@@ -4,6 +4,8 @@ const express = require('express'); // Importa la librería del framework expres
 
 const mongoose = require('mongoose'); // Importar la librería de mongoose para poder conectarnos a uan DB de mongoDB
 
+const path = require('path'); // Importar paquete de node encargado de armar las rutas o path de la aplicación utilizando el método "resolve()". Viene con el node, no hace falta instalarlo con "npm"
+
 const app = express(); // Almacena el método express para poder usar todas sus propiedades, métodos, middleware, etc de este poderoso framework
 
 // const bodyParser = require('body-parser'); // Importa el paquete 'body-parser' para poder usarlo como middleware y poder obtener en el objeto 'req.body' del cuerpo de las peticiones (propiedades y sus valores). Esta forma está deprecada ahora viene dentro del express y se emplea el middleware como se muestra más abajo
@@ -17,7 +19,12 @@ app.use(express.json()); // Para parsear el tipo de body 'application/json'. Aho
 // ======================================================================================================================
 // Rutas Middleware
 // ======================================================================================================================
-app.use(require('./routes/index')); // Middleware de rutas que carga el archivo "./routes/index" que contiene el índice de todas las rutas de la aplicación
+app.use(require('./routes/index')); // Middleware de rutas que carga el archivo "./routes/index" que contiene las rutas de los archivos que manejan todas las rutas de la aplicación
+
+// ======================================================================================================================
+// Habilitar la carpeta "public" para poder acceder a ella desde cualquier lugar (Middleware)
+// ======================================================================================================================
+app.use(express.static(path.resolve(__dirname, '../public'))); // Middleware que habilita la carpeta "public". Con el método "path.resolve(__dirname, '../public')" configuro la ruta o path absoluto para que funcione correctamente
 
 // ======================================================================================================================
 // Conexión a la DB

@@ -7,17 +7,17 @@ let verificaToken = (req, res, next) => { // Recibe 3 argumentos, el 1ro es la p
 
     let token = req.get('token'); // Contiene el token enviado en los Headers de la petición http. Se extrae del header de la petición mediante "req.get('token')". Otra forma muy común de enviar el token mediante el header de la petición es uasando la key "Authorization" en lugar de "token"
 
-    jwt.verify(token, process.env.SEED, (err, tokenDecoded) => {
+    jwt.verify(token, process.env.SEED, (err, tokenDecoded) => { // Verifica el token enviado en el header de la petición mediante el método "jwt.verify()". Este recibe 3 parámetros, el 1ro es el "token" que viene en el header de la petición, el 2do es la semilla "SEED" o clave secreta almacenada en la variable de entorno "process.env.SEED" del archivo "config.js" y el 3ro es un callback que devuelve o un error "err" o un token decodificado "tokenDecoded" que contiene todos los datos del usuario en cuestión
 
-        if (err) {
-            return res.status(401).json({
+        if (err) { // Si el callback devuelve un error haz lo sgte
+            return res.status(401).json({ // Retorna un estado (401 Unauthorized "error de autenticación") con el sgte mensaje
                 ok: false,
                 message: 'Token invalid',
                 err
             });
         }
-        req.usuario = tokenDecoded.usuario;
-        next();
+        req.usuario = tokenDecoded.usuario; // Si el callback devuelve el token decodificado almacénalo en la petición http "req.usuario" para que sea entregado al callback de la ruta que llamó este middleware
+        next(); // Continúa con la ejecución del código en la ruta que llamó este middleware
     });
 };
 
