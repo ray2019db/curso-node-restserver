@@ -12,7 +12,7 @@ app.use(fileUpload()); // Middleware que coloca cualquier archivo que subamos me
 // ==================================================================================================================================
 // PUT RUTA PARA ACTUALIZAR O SUBIR ARCHIVOS AL SERVIDOR
 // ==================================================================================================================================
-app.put('/upload/:tipo/:id', function(req, res) { // La ruta sería algo como esto "http://localhost:3000/upload/usuarios/123456asddfg"
+app.put('/upload/:tipo/:id', function(req, res) { // La ruta sería algo como esto "http://localhost:3000/upload/usuarios/123456asddfg". Utilizo un "PUT" en lugar de un "POST" porque no solo voy a subir archivos al servidor sino que voy a actualizarlos también, se puede usar un "POST" también y funcionaría correctamente solo es cuestión de mantener el estándar
 
     let tipo = req.params.tipo; // Almacena el tipo (usuarios o productos) pasado como parámetro por la url
     let id = req.params.id; // Almacena el id (del usuarios o del productos) pasado como parámetro por la url
@@ -50,13 +50,13 @@ app.put('/upload/:tipo/:id', function(req, res) { // La ruta sería algo como es
         });
     } // ---------------FIN DE EXTENSIONES PERMITIDAS-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    // CAMBIAR EL NOMBRE DEL ARCHIVO (para que cada archivo tenga un nombre único y no se sobre escriban)
+    // CAMBIAR EL NOMBRE DEL ARCHIVO (para que cada archivo tenga un nombre único y no corra el riesgo que se sobre escriban)
     let nombreArchivo = `${id}-${new Date().getMilliseconds()}.${ext}`;
     // -----------------FIN CAMBIO NOMBRE ARCHIVO----------------------------------------------------------------------------
 
     // MOVER EL ARCHIVO A LA RUTA ESPECIFICADA EN EL SERVIDOR
     archivo.mv(`./uploads/${tipo}/${nombreArchivo}`, (err) => { // Mueve o sube el "archivo" al servidor mediante el método "mv()". El 1er parámetro es la ruta donde deseamos guardar el "archivo" en el servidor "./uploads/${tipo}/${nombreArchivo}" y el 2do es un callback que retorna un error si existe o no hace nada si todo OK
-        if (err) {
+        if (err) { // Si exite un error
             return res.status(500).json({
                 ok: false,
                 err
@@ -64,7 +64,7 @@ app.put('/upload/:tipo/:id', function(req, res) { // La ruta sería algo como es
         }
         if (tipo === 'usuarios') { // Si el "tipo" es "usuarios":
             imagenUsuario(id, res, nombreArchivo, tipo); // Almacena el nombre de la imagen (ej: "6127b702c1cae70ebcee9f7e-470.jpg") en el campo "img" de la DB 
-        } else { // Si el "tipo" no es "usuarios":
+        } else { // Si el "tipo" no es "usuarios", o sea es "productos":
             imagenProducto(id, res, nombreArchivo, tipo); // Almacena el nombre de la imagen (ej: "6127b702c1cae70ebcee9f7e-470.jpg") en el campo "img" de la DB 
         }
     });

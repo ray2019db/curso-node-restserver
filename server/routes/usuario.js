@@ -56,12 +56,12 @@ app.post('/usuario', [verificaToken, verificaAdminRole], (req, res) => { // Ruta
     });
 
     usuario.save((err, usuarioDB) => { // Salva en la colección de 'usuarios' de la DB 'cafe' de MongoDB el usuario anterior (let usuario). El método save() devuelve o un error (err) o el usuario almacenado correctamente en la DB (usuarioDB)
-        if (err) { // Si devuelve un error haz lo sgte
+        if (err) { // Si devuelve un error haz lo sgte:
             return res.status(400).json({ // Envia un código de estado 'status()' y un mensaje en formato JSON '.json()'. En este caso el estado (400) significa 'Bad Request' petición erronea
                 ok: false,
                 err
             });
-        }
+        } // Si todo OK:
         res.json({ // Envía está respuesta en formato JSON 'json() si se almacenó el usuario correctamente en la DB
             ok: true,
             usuario: usuarioDB
